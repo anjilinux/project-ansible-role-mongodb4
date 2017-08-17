@@ -1,2 +1,9 @@
-localhost
+[all:vars]
+ansible_connection=ssh
+ansible_user=root
+ansible_ssh_pass=docker
+ansible_host=127.0.0.1
 
+[mongodb]
+ubuntu-system ansible_port=2200
+centos-system ansible_port=2222
