@@ -1,2 +1,35 @@
 ---
-# tasks file for ansible-role-mongodb
+- name: Add offical mongodb yum repository
+  yum_repository:
+    name: "mongodb-org-{{ mongodb_version }}"
+    baseurl: "https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mongodb_version }}/x86_64/"
+    description: MongoDB Repository
+    gpgcheck: yes
+    gpgkey: "https://www.mongodb.org/static/pgp/server-{{ mongodb_version }}.asc"
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Add offical mongodb apt key
+  apt_key:
+    id: 0C49F3730359A14518585931BC711F9BA15703C6
+    keyserver: hkp://keyserver.ubuntu.com:80
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Add offical mongodb repository
+  apt_repository:
+    repo: "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/{{ mongodb_version }} multiverse"
+    update_cache: yes
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install the mongodb
+  package:
+    name: mongodb-org
+    state: present
+
+- name: Ensure mongodb is started and enabled on boot
+  service:
+    name: mongod
+    state: started
+    enabled: yes
