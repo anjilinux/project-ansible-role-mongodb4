@@ -1,0 +1,15 @@
+---
+- name: Download and install netcat (yum)
+  yum: name={{ item }} state=installed
+  with_items:
+    - nc
+  when: ansible_os_family == "RedHat"
+
+- name: Download and install netcat (apt)
+  apt: name={{ item }} state=installed
+  with_items: netcat
+  when: ansible_os_family == "Debian"
+
+- name: Check if port 27017 is open
+  shell: nc -w 2 -v 127.0.0.1 27017 </dev/null
+  changed_when: false
