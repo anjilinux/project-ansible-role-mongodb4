@@ -1,4 +1,7 @@
 ---
+- name: Include OS family specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
 - name: Add offical mongodb yum repository
   yum_repository:
     name: "mongodb-org-{{ mongodb_version }}"
@@ -27,6 +30,23 @@
   package:
     name: mongodb-org
     state: present
+
+- name: Create the mongodb dbPath directory
+  file:
+    path: "{{ mongodb_db_path }}"
+    state: directory
+    owner: "{{ mongodb_user }}"
+    group: "{{ mongodb_group }}"
+    mode: 0755
+
+- name: Create the mongod config file
+  template:
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart mongod
 
 - name: Ensure mongodb is started and enabled on boot
   service:

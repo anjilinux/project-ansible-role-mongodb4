@@ -1,3 +1,4 @@
 ---
 # Tested versions: 3.4
 mongodb_version: 3.4
+mongodb_db_path: /var/lib/mongo
