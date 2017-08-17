@@ -4,21 +4,17 @@ docker_containers:
     image: kevincoakley/ubuntu16.04-systemd
     expose:
       - "27017"
-      - "28017"
     ports:
       - "2200:22"
       - "27017:27017"
-      - "28017:28017"
     volumes:
       - "/sys/fs/cgroup:/sys/fs/cgroup"
   - name: centos-system
     image: kevincoakley/centos7-systemd
     expose:
       - "27017"
-      - "28017"
     ports:
       - "2222:22"
       - "27027:27017"
-      - "28027:28017"
     volumes:
       - "/sys/fs/cgroup:/sys/fs/cgroup"
